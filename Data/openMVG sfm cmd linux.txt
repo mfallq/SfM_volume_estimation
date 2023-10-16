@@ -1,0 +1,34 @@
+%%1: Först KLTtracking, generera data, sedan kör script för openMVGs SfM:
+-----------------------------------------------------------
+%%2 PC: IMAGE-LISTING
+/home/marcus/Skrivbord/Examensarbete/openmvg/openMVG_Build/Linux-x86_64-RELEASE/openMVG_main_SfMInit_ImageListing -d /home/marcus/Skrivbord/Examensarbete/openmvg/openMVG/src/openMVG/exif/sensor_width_database/sensor_width_camera_database.txt -i /home/marcus/Skrivbord/Examensarbete/Data/images -o /home/marcus/Skrivbord/Examensarbete/Data/images/matches -k '3799,86439507347;0;2639,83295956407;0;3810,93874484602;1564,81995282067;0;0;1'
+
+/home/marcus/Skrivbord/Examensarbete/openmvg/openMVG_Build/Linux-x86_64-RELEASE/openMVG_main_SfMInit_ImageListing -d /home/marcus/Skrivbord/Examensarbete/openmvg/openMVG/src/openMVG/exif/sensor_width_database/sensor_width_camera_database.txt -i /media/sf_Shared/ -o /home/marcus/Skrivbord/Examensarbete/Data/images/matches -k '3799,86439507347;0;2639,83295956407;0;3810,93874484602;1564,81995282067;0;0;1'
+
+%%3: INCREMENTAL SFM
+/home/marcus/Skrivbord/Examensarbete/openmvg/openMVG_Build/Linux-x86_64-RELEASE/openMVG_main_IncrementalSfM -i /home/marcus/Skrivbord/Examensarbete/Data/images/matches/sfm_data.json -m /home/marcus/Skrivbord/Examensarbete/Data/images/matches -o /home/marcus/Skrivbord/Examensarbete/Data/images/out_Incremental_Reconstruction/
+%%33optional: GLOBAL
+/home/marcus/Skrivbord/Examensarbete/openmvg/openMVG_Build/Linux-x86_64-RELEASE/openMVG_main_GlobalSfM -i /home/marcus/Skrivbord/Examensarbete/Data/images/matches/sfm_data.json -m /home/marcus/Skrivbord/Examensarbete/Data/images/matches -o /home/marcus/Skrivbord/Examensarbete/Data/images/out_Global_Reconstruction/
+
+%%4: Ladda .bin camera poses till .json fil
+/home/marcus/Skrivbord/Examensarbete/openmvg/openMVG_Build/Linux-x86_64-RELEASE/openMVG_main_ConvertSfM_DataFormat -i /home/marcus/Skrivbord/Examensarbete/Data/images/pile2-2out_Incremental_Reconstruction/sfm_data.bin -o /home/marcus/Skrivbord/Examensarbete/Data/images/pile2-2out_Incremental_Reconstruction/pile2-2extrinsic.json -E -S
+
+Pierre: The first camera is not always at the origin, but you can fix it to the origin by using the Similarity function on SfM_Data and the Inverse pose computation of the first valid view.
+
+
+
+-----------------------------------------------------------
+%%2 Laptop: 
+openMVG_main_SfMInit_ImageListing -d "C:\Users\Marcus\Desktop\Examensarbete\SfM pipeline\openMVG\src\openMVG\exif\sensor_width_database\sensor_width_camera_database.txt" -i C:\Users\Marcus\Desktop\Examensarbete\Data\images -o C:\Users\Marcus\Desktop\Examensarbete\Data\images\matches -k 3799,86439507347;0;2639,83295956407;0;3810,93874484602;1564,81995282067;0;0;1
+
+%%3: GLOBAL
+openMVG_main_GlobalSfM -i C:\Users\Marcus\Desktop\Examensarbete\Data\images\matches\sfm_data.json -m C:\Users\Marcus\Desktop\Examensarbete\Data\images\matches -o C:\Users\Marcus\Desktop\Examensarbete\Data\images\out_Global_Reconstruction\
+
+%%4: Ladda .bin camera poses till .json fil
+openMVG_main_ConvertSfM_DataFormat
+
+
+%%3 optional: INCREMENTAL SFM
+openMVG_main_IncrementalSfM -i C:\Users\Marcus\Desktop\Examensarbete\Data\images\matches\sfm_data.json -m C:\Users\Marcus\Desktop\Examensarbete\Data\images\matches -o C:\Users\Marcus\Desktop\Examensarbete\Data\images\out_Incremental_Reconstruction\ 
+
+
